@@ -16,7 +16,7 @@ export default function ImageGenerator() {
     setImage(null);
 
     try {
-      const response = await fetch("/api/fal-ai", {
+      const response = await fetch("/api/comfyui", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

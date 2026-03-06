@@ -9,19 +9,20 @@ export async function POST(req: Request) {
     const result = await fal.subscribe("fal-ai/flux-2/klein/9b/base/lora", {
       input: {
         prompt: `(raw photo, candid phone quality, messy room:1.2), ${prompt}`,
+        // TEMP: LoRAs disabled to test if expired URLs cause noise
         loras: [
           {
             path: "https://v3b.fal.media/files/b/0a90c5ef/CNUXMfH7YbMQbj9rmCeDS_lenovo_flux_klein9b.safetensors",
-            scale: 0.6,
+            scale: 0.2,
           },
           {
             path: "https://v3b.fal.media/files/b/0a90c6d9/U7hKk611_n_YPIXKIycAV_nicegirls_flux_klein9b.safetensors",
-            scale: 0.6,
-          },
-          {
-            path: "https://v3b.fal.media/files/b/0a90c722/qUwQpealTDOwlMXGbYW92_klein_snofs_v1_1.safetensors",
-            scale: 0.6,
-          },
+            scale: 0.5,
+          }, //,
+          // {
+          //   path: "https://v3b.fal.media/files/b/0a90c722/qUwQpealTDOwlMXGbYW92_klein_snofs_v1_1.safetensors",
+          //   scale: 0.3,
+          // },
         ],
         seed: seed || Math.floor(Math.random() * 1000000),
         enable_safety_checker: false,
