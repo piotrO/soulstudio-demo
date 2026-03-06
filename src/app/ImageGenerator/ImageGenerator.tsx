@@ -16,7 +16,7 @@ export default function ImageGenerator() {
     setImage(null);
 
     try {
-      const response = await fetch("/api/comfyui", {
+      const response = await fetch("/api/fal-ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -29,10 +29,10 @@ export default function ImageGenerator() {
 
       if (!response.ok) throw new Error(result.error || "Generation failed");
 
-      // RunPod returns base64 image in output.message
-      const imageData = result.output?.message;
-      if (imageData) {
-        setImage(imageData);
+      // fal-ai returns images as an array with url properties
+      const imageUrl = result.data?.images?.[0]?.url || result.images?.[0]?.url;
+      if (imageUrl) {
+        setImage(imageUrl);
       }
     } catch (err: any) {
       setError(err.message);

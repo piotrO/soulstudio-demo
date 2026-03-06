@@ -35,12 +35,12 @@ export async function POST(req: Request) {
   // Deep clone the workflow so we can inject dynamic values
   const wf = JSON.parse(JSON.stringify(workflow));
 
-  // Inject the prompt (node 7 = positive prompt)
-  wf["7"].inputs.text =
+  // Inject the prompt (node 5 = positive prompt)
+  wf["5"].inputs.text =
     `(raw photo, candid phone quality, messy room:1.2), ${prompt}`;
 
-  // Inject the seed (node 11 = KSampler)
-  wf["11"].inputs.seed = seed || Math.floor(Math.random() * 1000000);
+  // Inject the seed (node 8 = KSampler)
+  wf["8"].inputs.seed = seed || Math.floor(Math.random() * 1000000);
 
   try {
     // Submit job (async — returns immediately with a job ID)

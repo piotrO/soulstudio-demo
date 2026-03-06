@@ -1,86 +1,61 @@
 {
   "1": {
     "inputs": {
-      "unet_name": "flux-2-klein-9b.safetensors",
-      "weight_dtype": "default"
+      "ckpt_name": "flux-2-klein-9b.safetensors"
     },
-    "class_type": "UNETLoader",
-    "_meta": { "title": "Load Flux 2 Klein 9B (UNet)" }
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": { "title": "Load Flux 2 Klein 9B" }
   },
   "2": {
-    "inputs": {
-      "clip_name1": "clip_l.safetensors",
-      "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
-      "type": "flux"
-    },
-    "class_type": "DualCLIPLoader",
-    "_meta": { "title": "Load CLIP-L + T5-XXL" }
-  },
-  "3": {
-    "inputs": {
-      "vae_name": "ae.safetensors"
-    },
-    "class_type": "VAELoader",
-    "_meta": { "title": "Load VAE" }
-  },
-  "4": {
     "inputs": {
       "lora_name": "lenovo_flux_klein9b.safetensors",
       "strength_model": 0.6,
       "strength_clip": 0.6,
       "model": ["1", 0],
-      "clip": ["2", 0]
+      "clip": ["1", 1]
     },
     "class_type": "LoraLoader",
     "_meta": { "title": "LoRA 1 - Lenovo" }
   },
-  "5": {
+  "3": {
     "inputs": {
       "lora_name": "nicegirls_flux_klein9b.safetensors",
       "strength_model": 0.6,
       "strength_clip": 0.6,
-      "model": ["4", 0],
-      "clip": ["4", 1]
+      "model": ["2", 0],
+      "clip": ["2", 1]
     },
     "class_type": "LoraLoader",
     "_meta": { "title": "LoRA 2 - Nice Girls" }
   },
-  "6": {
+  "4": {
     "inputs": {
       "lora_name": "klein_snofs_v1_1.safetensors",
       "strength_model": 0.6,
       "strength_clip": 0.6,
-      "model": ["5", 0],
-      "clip": ["5", 1]
+      "model": ["3", 0],
+      "clip": ["3", 1]
     },
     "class_type": "LoraLoader",
     "_meta": { "title": "LoRA 3 - Klein SNOFS" }
   },
-  "7": {
+  "5": {
     "inputs": {
       "text": "(raw photo, candid phone quality, messy room:1.2), a beautiful woman",
-      "clip": ["6", 1]
+      "clip": ["4", 1]
     },
     "class_type": "CLIPTextEncode",
     "_meta": { "title": "Positive Prompt" }
   },
-  "8": {
+  "6": {
     "inputs": {
       "text": "",
-      "clip": ["6", 1]
+      "clip": ["4", 1]
     },
     "class_type": "CLIPTextEncode",
     "_meta": { "title": "Negative Prompt (empty)" }
   },
-  "9": {
-    "inputs": {
-      "guidance": 4.5,
-      "conditioning": ["7", 0]
-    },
-    "class_type": "FluxGuidance",
-    "_meta": { "title": "Flux Guidance (4.5)" }
-  },
-  "10": {
+  "7": {
     "inputs": {
       "width": 768,
       "height": 1024,
@@ -89,34 +64,34 @@
     "class_type": "EmptySD3LatentImage",
     "_meta": { "title": "Latent Image (Portrait 4:3)" }
   },
-  "11": {
+  "8": {
     "inputs": {
       "seed": 42,
-      "steps": 28,
-      "cfg": 1,
+      "steps": 6,
+      "cfg": 3.5,
       "sampler_name": "euler",
       "scheduler": "simple",
       "denoise": 1,
-      "model": ["6", 0],
-      "positive": ["9", 0],
-      "negative": ["8", 0],
-      "latent_image": ["10", 0]
+      "model": ["4", 0],
+      "positive": ["5", 0],
+      "negative": ["6", 0],
+      "latent_image": ["7", 0]
     },
     "class_type": "KSampler",
     "_meta": { "title": "KSampler" }
   },
-  "12": {
+  "9": {
     "inputs": {
-      "samples": ["11", 0],
-      "vae": ["3", 0]
+      "samples": ["8", 0],
+      "vae": ["1", 2]
     },
     "class_type": "VAEDecode",
     "_meta": { "title": "VAE Decode" }
   },
-  "13": {
+  "10": {
     "inputs": {
       "filename_prefix": "ComfyUI",
-      "images": ["12", 0]
+      "images": ["9", 0]
     },
     "class_type": "SaveImage",
     "_meta": { "title": "Save Image" }
